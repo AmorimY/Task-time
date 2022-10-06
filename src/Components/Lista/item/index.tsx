@@ -1,10 +1,19 @@
-import style from '../lista.module.scss'
+import style from './item.module.scss'
+import { ITarefa } from '../../../types/tarefa'
 
-export default function item({tarefa,tempo} : {tarefa :string,tempo :string}): JSX.Element{
+interface Props extends  ITarefa{
+    selecionaTarefa: (tarefaSelecionada : ITarefa) => void
+}
+
+export default function item({tarefa,tempo,selecionado,completado,id,selecionaTarefa} : Props): JSX.Element{
+
     return (
-        <li className={style.item}>
+        <li className={`${style.item} ${selecionado ? style.itemSelecionado : ''}  ${completado ? style.itemCompletado : ''}`} onClick ={ () => !completado && selecionaTarefa({
+            tarefa,tempo,selecionado,completado,id
+        })}>
         <h3>{tarefa}</h3>
         <span>{tempo}</span>
+        {completado && <span className={style.concluido} aria-Label="tarefa completada"></span>}
     </li>
     )
 }
